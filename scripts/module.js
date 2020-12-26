@@ -1,9 +1,18 @@
 Hooks.once('init', setup);
 
-var dnd_default_schools = {};
+const dnd_default_schools = {
+  "abj": "DND5E.SchoolAbj",
+  "con": "DND5E.SchoolCon",
+  "div": "DND5E.SchoolDiv",
+  "enc": "DND5E.SchoolEnc",
+  "evo": "DND5E.SchoolEvo",
+  "ill": "DND5E.SchoolIll",
+  "nec": "DND5E.SchoolNec",
+  "trs": "DND5E.SchoolTrs"
+};
+
 
 Hooks.once('ready', async function() {
-  dnd_default_schools = game.dnd5e.config.spellSchools;
   await addSpellSchools();
 });
 
@@ -83,7 +92,11 @@ async function addSpellSchools() {
 				console.log("spell-schools | Added " + sch + " with abbreviation " + sch_abbr);;
 			}
 		});
+  } else {
+    console.log("spell-schools | Resetting to default 5e schools.");
   }
+  
+  console.log(all_schools);
   
   game.dnd5e.config.spellSchools = all_schools;
 }
