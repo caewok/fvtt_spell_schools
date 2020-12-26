@@ -60,14 +60,14 @@ async function addSpellSchools() {
   
   if(!isEmpty(schools_str)) {
     console.log("spell-schools | Adding " + schools_str);
-    const schools_to_add_arr = schools_to_add_str.split(",");
+    const schools_to_add_arr = schools_str.split(",");
   
 		// create abbreviations and test each in turn
 		schools_to_add_arr.forEach(function(sch) {
 			const existing_abbr = Object.keys( all_schools );
 	
 			// get the alphanumeric version
-			const sch_alpha = sch.input.replace(/\W/g, '');
+			const sch_alpha = sch.replace(/\W/g, '').toLowerCase();
 		
 			let i = Math.min(3, sch_alpha.length);
 			let sch_abbr = sch_alpha.substring(0, i - 1);
