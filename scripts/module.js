@@ -15,7 +15,7 @@ async function setup() {
 function registerSpellSchoolsSettings() {
     game.settings.register("spell-schools", "schools", {
         name: "Spell Schools to Add",
-        hint: "Add the names of additional spell schools separated by commas. Schools should not repeat nor repeat existing DnD schools."
+        hint: "Add the names of additional spell schools separated by commas. Schools should not repeat nor repeat existing DnD schools.",
         scope: "world",
         config: true,
         type: String,
