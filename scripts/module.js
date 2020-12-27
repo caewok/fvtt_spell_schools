@@ -1,23 +1,21 @@
 Hooks.once('init', setup);
 
-const dnd_default_schools = {
-  "abj": "DND5E.SchoolAbj",
-  "con": "DND5E.SchoolCon",
-  "div": "DND5E.SchoolDiv",
-  "enc": "DND5E.SchoolEnc",
-  "evo": "DND5E.SchoolEvo",
-  "ill": "DND5E.SchoolIll",
-  "nec": "DND5E.SchoolNec",
-  "trs": "DND5E.SchoolTrs"
-};
 
+let dnd_default_schools = {};
 
 Hooks.once('ready', async function() {
+  console.log('spell-schools | Readying Spell Schools module');
+  console.log(game.dnd5e.config.spellSchools);  
+  dnd_default_schools = JSON.parse(JSON.stringify(game.dnd5e.config.spellSchools));
+  
   await addSpellSchools();
 });
 
 async function setup() {
-    console.log('spell-schools | Initializing Spell Schools module');
+    // game.dnd5e.config.spellSchools not yet localized. 
+    //console.log('spell-schools | Initializing Spell Schools module');
+    //console.log(game.dnd5e.config.spellSchools);
+
     await registerSpellSchoolsSettings();
 }
 
@@ -65,7 +63,9 @@ function isEmpty(str) {
  */
 async function addSpellSchools() {
   const schools_str = game.settings.get("spell-schools", "schools");
-  let all_schools = dnd_default_schools;
+  
+  // make sure we are deep copying and not linking.
+  let all_schools = JSON.parse(JSON.stringify(dnd_default_schools));
   
   if(!isEmpty(schools_str)) {
     console.log("spell-schools | Adding " + schools_str);
