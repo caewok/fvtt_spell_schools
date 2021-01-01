@@ -2,7 +2,7 @@
   "name": "spell-schools",
   "title": "Spell Schools - Add additional spell schools to DnD 5e",
   "description": "A simple module to add additional spell schools to the spell school drop-down menus in DnD 5e.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "minimumCoreVersion": "0.6.2",
   "compatibleCoreVersion": "0.7.7",
   "author": "Michael Enion <caewok_2000@yahoo.com>",
@@ -30,5 +30,5 @@
   ],
   "url": "https://github.com/caewok/fvtt_spell_schools",
   "manifest": "https://github.com/caewok/fvtt_spell_schools/releases/download/latest/module.json",
-  "download": "https://github.com/caewok/fvtt_spell_schools/releases/download/0.0.3/module.zip"
+  "download": "https://github.com/caewok/fvtt_spell_schools/releases/download/0.0.4/module.zip"
 }
