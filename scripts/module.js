@@ -5,18 +5,19 @@ let dnd_default_schools = {};
 
 Hooks.once('ready', async function() {
   console.log('spell-schools | Readying Spell Schools module');
-  console.log(game.dnd5e.config.spellSchools);  
-  dnd_default_schools = JSON.parse(JSON.stringify(game.dnd5e.config.spellSchools));
+  //console.log(game.dnd5e.config.spellSchools);  
   
+    
   await addSpellSchools();
 });
 
 async function setup() {
     // game.dnd5e.config.spellSchools not yet localized. 
-    //console.log('spell-schools | Initializing Spell Schools module');
+    console.log('spell-schools | Initializing Spell Schools module');
     //console.log(game.dnd5e.config.spellSchools);
-
+    dnd_default_schools = JSON.parse(JSON.stringify(game.dnd5e.config.spellSchools));
     await registerSpellSchoolsSettings();
+    await addSpellSchools(true);
 }
 
 function registerSpellSchoolsSettings() {
@@ -61,35 +62,48 @@ function isEmpty(str) {
  * Remove any other than the default set or the new additions
  * @return Nothing
  */
-async function addSpellSchools() {
+async function addSpellSchools(init = false) {
   const schools_str = game.settings.get("spell-schools", "schools");
+  //console.log("spell-schools | Settings: " + schools_str);
+  //console.log("spell-schools | dnd_default_schools keys: " + Object.keys(dnd_default_schools));
+
+  //console.log("spell-schools | default: ");
+  //console.log(dnd_default_schools)
   
-  // make sure we are deep copying and not linking.
-  let all_schools = JSON.parse(JSON.stringify(dnd_default_schools));
+  let all_schools = game.dnd5e.config.spellSchools;
+  if(!init) {
+    // make sure we are deep copying and not linking.
+    //console.log("spell-schools | all_schools keys: " + Object.keys(all_schools));
+
+    all_schools = JSON.parse(JSON.stringify(all_schools));
+    all_schools = filterObject(all_schools, dnd_default_schools);
+
+    //console.log("spell-schools | all_schools keys: " + Object.keys(all_schools));
+
+    // console.log(dnd_default_schools);
+
+  }
   
+  //console.log("spell-schools | all_schools object: ");
+  //console.log(all_schools);
+
+  
+    
   if(!isEmpty(schools_str)) {
     console.log("spell-schools | Adding " + schools_str);
     const schools_to_add_arr = schools_str.split(",");
   
-		// create abbreviations and test each in turn
+		// create keys and test each in turn
 		schools_to_add_arr.forEach(function(sch) {
-			const existing_abbr = Object.keys( all_schools );
+			const existing_keys = Object.keys( all_schools );
 	
 			// get the alphanumeric version
-			const sch_alpha = sch.replace(/\W/g, '').toLowerCase();
+			const sch_key = sch.replace(/\W/g, '').toLowerCase();
 		
-			let i = Math.min(3, sch_alpha.length);
-			let sch_abbr = sch_alpha.substring(0, i - 1);
-			while(i < sch_alpha.length && arrayContains(sch_abbr, existing_abbr)) {
-				// test increasingly long abbreviations until we get one that works
-				i += 1;
-				sch_abbr = sch_alpha.substring(0, i - 1);
-			}
-		
-			// check that we are not still using an existing abbreviation
-			if(!arrayContains(sch_abbr, existing_abbr)) {
-				all_schools[ sch_abbr ] = sch;  
-				console.log("spell-schools | Added " + sch + " with abbreviation " + sch_abbr);;
+			// check that we are not using an existing abbreviation
+			if(!arrayContains(sch_key, existing_keys)) {
+				all_schools[ sch_key ] = sch;  
+				console.log("spell-schools | Added " + sch + " with key " + sch_key);;
 			}
 		});
   } else {
